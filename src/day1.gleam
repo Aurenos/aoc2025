@@ -7,6 +7,7 @@ import inputs
 pub fn run(part: String) {
   case part {
     "1" -> part1()
+    "2" -> part2()
     _ -> io.println("Invalid part for day 1")
   }
 }
@@ -30,10 +31,14 @@ fn parse_rotation(input: String) -> Rotation {
   }
 }
 
-fn part1() {
-  inputs.load_input_text("d1p1.txt")
+fn get_rotations() -> List(Rotation) {
+  inputs.load_input_text("d1.txt")
   |> string.split(on: "\n")
   |> list.map(parse_rotation)
+}
+
+fn part1() {
+  get_rotations()
   |> list.fold(#(50, 0), fn(acc, rotation) {
     let #(current_dial, password) = acc
     let rotated = case rotation {
@@ -46,6 +51,38 @@ fn part1() {
       0 -> #(new_dial, password + 1)
       _ -> #(new_dial, password)
     }
+  })
+  |> echo
+
+  Nil
+}
+
+fn part2() {
+  get_rotations()
+  |> list.fold(#(50, 0), fn(acc, rotation) {
+    let #(current_dial, password) = acc
+    let rotated = case rotation {
+      Left(n) -> current_dial - n
+      Right(n) -> current_dial + n
+    }
+    let assert Ok(new_dial) = int.modulo(rotated, 100)
+
+    let start = case rotation {
+      Left(_) -> current_dial - 1
+      Right(_) -> current_dial + 1
+    }
+
+    let zeros =
+      list.range(start, rotated)
+      |> list.fold(0, fn(acc, n) {
+        let assert Ok(dial_num) = int.modulo(n, 100)
+        case dial_num {
+          0 -> acc + 1
+          _ -> acc
+        }
+      })
+
+    #(new_dial, password + zeros)
   })
   |> echo
 
