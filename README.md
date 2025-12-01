@@ -1,3 +1,8 @@
 # Advent of Code 2025 in Gleam
 
-Wahoo
+```shell
+gleam run {day} {part}
+
+# Example
+gleam run 1 1
+```
