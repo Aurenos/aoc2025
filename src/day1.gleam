@@ -35,16 +35,16 @@ fn part1() {
   |> string.split(on: "\n")
   |> list.map(parse_rotation)
   |> list.fold(#(50, 0), fn(acc, rotation) {
-    let #(current, password) = acc
-    let adjusted = case rotation {
-      Left(n) -> current - n
-      Right(n) -> current + n
+    let #(current_dial, password) = acc
+    let rotated = case rotation {
+      Left(n) -> current_dial - n
+      Right(n) -> current_dial + n
     }
-    let assert Ok(rotated) = int.modulo(adjusted, 100)
+    let assert Ok(new_dial) = int.modulo(rotated, 100)
 
-    case rotated {
-      0 -> #(rotated, password + 1)
-      _ -> #(rotated, password)
+    case new_dial {
+      0 -> #(new_dial, password + 1)
+      _ -> #(new_dial, password)
     }
   })
   |> echo
