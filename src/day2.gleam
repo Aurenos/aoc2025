@@ -1,17 +1,8 @@
 import gleam/bool
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
 import inputs
-
-pub fn run(part: String) {
-  case part {
-    "1" -> part1()
-    "2" -> part2()
-    _ -> io.println("Invalid part for day 2")
-  }
-}
 
 type IDRange {
   IDRange(start: Int, end: Int)
@@ -31,7 +22,7 @@ fn id_ranges() -> List(IDRange) {
   |> list.map(parse_id_range)
 }
 
-fn part1() {
+pub fn part1() {
   id_ranges()
   |> list.fold(0, fn(acc, id_range) {
     let n =
@@ -45,6 +36,7 @@ fn part1() {
         }
       })
       |> int.sum
+
     acc + n
   })
   |> echo
@@ -52,7 +44,7 @@ fn part1() {
   Nil
 }
 
-fn part2() {
+pub fn part2() {
   id_ranges()
   |> list.fold(0, fn(acc, id_range) {
     let n =

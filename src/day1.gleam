@@ -1,16 +1,7 @@
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
 import inputs
-
-pub fn run(part: String) {
-  case part {
-    "1" -> part1()
-    "2" -> part2()
-    _ -> io.println("Invalid part for day 1")
-  }
-}
 
 type Rotation {
   Left(Int)
@@ -37,7 +28,7 @@ fn get_rotations() -> List(Rotation) {
   |> list.map(parse_rotation)
 }
 
-fn part1() {
+pub fn part1() {
   get_rotations()
   |> list.fold(#(50, 0), fn(acc, rotation) {
     let #(current_dial, password) = acc
@@ -57,7 +48,7 @@ fn part1() {
   Nil
 }
 
-fn part2() {
+pub fn part2() {
   get_rotations()
   |> list.fold(#(50, 0), fn(acc, rotation) {
     let #(current_dial, password) = acc
