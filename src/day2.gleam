@@ -58,27 +58,15 @@ fn part2() {
     let n =
       list.range(id_range.start, id_range.end)
       |> list.filter(fn(num) {
-        let num_str = int.to_string(num)
-        let str_len = string.length(num_str)
-        let chars = string.to_graphemes(num_str)
+        let digits = num |> int.to_string() |> string.to_graphemes()
+        use <- bool.guard(list.length(digits) <= 1, False)
 
-        // there's probably a less jank way to do this check, but whatever it works
-        use <- bool.guard(
-          bool.and(str_len > 1, chars |> list.unique() |> list.length() == 1),
-          True,
-        )
-        use <- bool.guard(str_len <= 2, False)
-
-        let assert Ok(half) = int.divide(str_len, 2)
-        let repeats_exist =
-          list.range(2, half)
-          |> list.any(fn(chunk_len) {
-            let chunks = list.sized_chunk(chars, into: chunk_len)
-            chunks |> list.unique() |> list.length() == 1
-          })
-        use <- bool.guard(repeats_exist, True)
-
-        False
+        let assert Ok(half) = int.divide(digits |> list.length(), 2)
+        list.range(1, half)
+        |> list.any(fn(chunk_len) {
+          let chunks = list.sized_chunk(digits, into: chunk_len)
+          chunks |> list.unique() |> list.length() == 1
+        })
       })
       |> int.sum
 
