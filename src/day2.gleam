@@ -37,21 +37,12 @@ fn part1() {
     let n =
       list.range(id_range.start, id_range.end)
       |> list.filter(fn(num) {
-        let num_str = int.to_string(num)
-        let str_len = string.length(num_str)
-        let assert Ok(mod) = int.modulo(str_len, 2)
-        use <- bool.guard(mod != 0, False)
-
-        let chars = string.to_graphemes(num_str)
-        use <- bool.guard(chars |> list.unique() |> list.length() == 1, True)
-
-        let assert Ok(half) = int.divide(str_len, 2)
-        let assert [digits1, digits2] = list.sized_chunk(chars, into: half)
-        let first_half = string.join(digits1, "")
-        let second_half = string.join(digits2, "")
-        use <- bool.guard(first_half == second_half, True)
-
-        False
+        let digits = num |> int.to_string() |> string.to_graphemes()
+        let assert Ok(half) = digits |> list.length() |> int.divide(2)
+        case list.sized_chunk(digits, into: half) {
+          [digits1, digits2] -> digits1 == digits2
+          _ -> False
+        }
       })
       |> int.sum
     acc + n
