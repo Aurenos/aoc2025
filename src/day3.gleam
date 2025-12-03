@@ -28,20 +28,22 @@ pub fn part1() {
   |> list.fold(0, fn(total, pack) {
     let BatteryPack(lst) = pack
     let len = list.length(lst)
+    // I originally solved this using index_fold on lst, but I had this silly idea
+    let assert [rest, [last]] = list.sized_chunk(lst, into: len - 1)
     let joltage =
-      lst
-      |> list.index_fold(#(0, 0), fn(digits, battery, idx) {
+      rest
+      |> list.fold(#(0, 0), fn(digits, battery) {
         case digits {
-          #(n, _) if battery > n -> {
-            case idx == len - 1 {
-              True -> #(n, battery)
-              False -> #(battery, 0)
-            }
-          }
+          #(n, _) if battery > n -> #(battery, 0)
           #(n, m) if battery > m -> #(n, battery)
           _ -> digits
         }
       })
+
+    let joltage = case last > joltage.1 {
+      True -> #(joltage.0, last)
+      False -> joltage
+    }
 
     total + { joltage.0 * 10 } + joltage.1
   })
