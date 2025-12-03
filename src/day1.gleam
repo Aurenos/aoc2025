@@ -23,7 +23,7 @@ fn parse_rotation(input: String) -> Rotation {
 }
 
 fn get_rotations() -> List(Rotation) {
-  inputs.load_input_text("d1.txt")
+  inputs.load_input_text("d1brick.txt")
   |> string.split(on: "\n")
   |> list.map(parse_rotation)
 }

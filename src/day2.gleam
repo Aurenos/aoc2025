@@ -17,7 +17,6 @@ fn parse_id_range(input: String) -> IDRange {
 
 fn id_ranges() -> List(IDRange) {
   inputs.load_input_text("d2.txt")
-  |> string.trim()
   |> string.split(on: ",")
   |> list.map(parse_id_range)
 }
