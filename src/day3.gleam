@@ -28,25 +28,22 @@ pub fn part1() {
   |> list.fold(0, fn(total, pack) {
     let BatteryPack(lst) = pack
     let len = list.length(lst)
-    let joltage_str =
+    let joltage =
       lst
-      |> list.index_fold([0, 0], fn(digits, battery, idx) {
+      |> list.index_fold(#(0, 0), fn(digits, battery, idx) {
         case digits {
-          [n, _] if battery > n -> {
+          #(n, _) if battery > n -> {
             case idx == len - 1 {
-              True -> [n, battery]
-              False -> [battery, 0]
+              True -> #(n, battery)
+              False -> #(battery, 0)
             }
           }
-          [n, m] if battery > m -> [n, battery]
+          #(n, m) if battery > m -> #(n, battery)
           _ -> digits
         }
       })
-      |> list.map(int.to_string)
-      |> string.join("")
 
-    let assert Ok(joltage) = int.parse(joltage_str)
-    total + joltage
+    total + { joltage.0 * 10 } + joltage.1
   })
   |> echo
 
