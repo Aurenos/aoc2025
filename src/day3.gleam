@@ -26,10 +26,10 @@ fn packs() -> List(BatteryPack) {
 pub fn part1() {
   packs()
   |> list.fold(0, fn(total, pack) {
-    let BatteryPack(lst) = pack
-    let len = list.length(lst)
-    // I originally solved this using index_fold on lst, but I had this silly idea
-    let assert [rest, [last]] = list.sized_chunk(lst, into: len - 1)
+    let BatteryPack(batteries) = pack
+    let len = list.length(batteries)
+    // I originally solved this using index_fold on batteries, but I had this silly idea
+    let assert [rest, [last]] = list.sized_chunk(batteries, into: len - 1)
     let joltage =
       rest
       |> list.fold(#(0, 0), fn(digits, battery) {
